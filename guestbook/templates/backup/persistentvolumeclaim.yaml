@@ -1,0 +1,19 @@
+# This is a PersistentVolumeClaim template that will be used to contain
+# the Redis dump
+{{- if .Values.redis.master.persistence.enabled }} # Include resource only if set to true
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-data-{{ .Values.redis.fullnameOverride }}-master-0-backup-{{ sub .Release.Revision 1 }} # name of the backup
+  labels:
+    {{- include "guestbook.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "0" # hook order
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.redis.master.persistence.size }}
+{{- end }}

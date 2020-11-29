@@ -16,7 +16,7 @@ spec:
           image: redis:alpine3.11
           command: ["/bin/sh", "-c"]
           args: ["cp /backup/dump.rdb /data/dump.rdb &&
-            redis-cli -h {{ .Values.redis.fullnameOverride }}-master debug restart || true"]
+            redis-cli -h {{ .Values.redis.fullnameOverride }}-master debug restart || true"] # Perform data restore
           volumeMounts:
             - name: redis-data
               mountPath: /data
@@ -26,7 +26,7 @@ spec:
       volumes:
         - name: redis-data
           persistentVolumeClaim:
-            claimName: redis-data-{{ .Values.redis.fullnameOverride }}-master-0
+            claimName: redis-data-{{ .Values.redis.fullnameOverride }}-master-0 # Redis master volume
         - name: backup
           persistentVolumeClaim:
             claimName: redis-data-{{ .Values.redis.fullnameOverride }}-master-0-backup-{{ .Release.Revision }}

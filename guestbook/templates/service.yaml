@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "guestbook.labels" . | nindent 4 }}
 spec:
-{{- $serviceTypes := list "ClusterIP" "NodePort" }}
+{{- $serviceTypes := list "ClusterIP" "NodePort" }} # Domain of valid values
 {{- if has .Values.service.type $serviceTypes }}
   type: {{ .Values.service.type }}
 {{- else }}
